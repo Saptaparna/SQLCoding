@@ -1,0 +1,68 @@
+Question 1:
+
+Answer: 
+select title from Movie where director='Steven Spielberg'
+
+Question 2:
+
+Answer: 
+select year from Movie 
+where mID IN (select mID from Rating where stars IN (4,5))
+order by year asc
+
+Question 3:
+
+Answer: 
+select title from Movie where mID NOT IN (select mID from Rating)
+
+Question 4:
+
+Answer:
+select name from Reviewer 
+where rID in (select rID from  Rating where ratingDate IS NULL)
+
+Question 5:
+
+Answer:
+select Reviewer.name, Movie.title, Rating.stars, Rating.RatingDate
+FROM Rating join Reviewer on Rating.rID = Reviewer.rID
+ join Movie on Movie.mID=Rating.mID
+ order by Reviewer.name, Movie.title, stars
+
+Question 6:
+
+Answer:
+select name, title FROM
+(select name, count(Rating.rID) as cont, Rating.mID, title, stars,ratingDate from Rating
+join Reviewer on Rating.rid = Reviewer.rid
+join Movie on Movie.mID = Rating.mID
+ group by Rating.rID, Rating.mID) as T
+WHERE t.cont > 1 limit 1
+
+Question 7:
+
+Answer:
+select title, MAX(stars) from Rating
+join Movie on Movie.mID=Rating.mID
+group by Movie.mID
+order by title
+
+Question 8:
+
+Answer:
+select movie.title, max(stars)-min(stars) as spread
+from Rating join movie on Rating.mID=Movie.mID
+group by rating.mID
+order by spread DESC, title
+
+Question 9:
+
+Answer:
+select max(a1)-min(a1) from
+(select avg(av1) a1 from
+(select avg(stars) av1 from Rating r join Movie m on r.mID=m.mID where m.year < 1980
+group by r.mID)
+union
+select avg(av2) a1 from
+(select avg(stars) av2 from Rating r join Movie m on r.mID=m.mID where m.year > 1980
+group by r.mID))
