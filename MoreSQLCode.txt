@@ -1,0 +1,131 @@
+select first, age from empinfo
+
+select first, last, city from empinfo
+   where city <> 'Payson'
+
+select first, last, id, age, city, state from empinfo
+   where age > 40
+
+select first, last from empinfo
+   where last LIKE '%ay';
+
+select first, last, id, age, city, state from empinfo
+   where first = 'Mary';
+
+select first, last, id, age, city, state from empinfo
+   where first LIKE '%Mary%';
+
+SELECT customerid, item, price
+FROM items_ordered
+WHERE customerid=10449;
+
+SELECT *
+   FROM items_ordered
+   WHERE item='TENT';
+
+SELECT customerid, order_date, item
+   FROM items_ordered
+   WHERE item LIKE 's%';
+
+SELECT distinct item
+   FROM items_ordered;
+
+select MAX(price) from items_ordered; 
+select AVG(price) from items_ordered
+   where order_date LIKE '%Dec%';
+
+select count(*) from items_ordered;
+select MIN(price) from items_ordered
+   where item='TENT';
+   
+select state, count(state) from customers 
+   group by state;
+
+select item, max(price), min(price) from items_ordered 
+   group by item;
+select customerid, count(customerid), sum(price) from items_ordered
+  group by customerid;
+
+
+select state, count(customerid)
+from customers
+group by state
+having count(customerid) > 1;
+
+select item, max(price), min(price)
+from items_ordered
+having max(price) > 190.0;
+
+select item, max(price), min(price)
+from items_ordered
+group by item
+having max(price) > 190.0;
+
+select customerid, count(customerid), sum(price)
+from  items_ordered
+group by customerid
+having count(customerid) > 1
+
+select lastname, firstname, city
+from customers
+order by lastname asc;
+
+select lastname, firstname, city
+from customers
+order by lastname desc;
+
+select item, price 
+from items_ordered
+having price > 10.0
+order by price asc;
+
+select customerid, order_date, item
+from items_ordered 
+where item <> 'Snow Shoes' or item <>  'Ear Muffs';
+
+select customerid, order_date, item
+from items_ordered 
+where (item <> 'Snow Shoes') and (item <>  'Ear Muffs');
+
+select item, price
+from items_ordered
+where item like 'S%' or item like 'P%' or item like ‘F%’;
+
+select date, item, price
+from items_ordered
+where price >= 10.00 and price <= 80.00;
+
+select order_date, item, price
+from items_ordered
+where price between 10.00 and 80.00;
+
+select firstname, city, state
+from customers
+where state in ('Arizona', 'Washington', 'Oklahoma', 'Colorado', 'Hawaii');
+
+
+select item, sum(price)/sum(quantity)
+from items_ordered
+group by item;
+
+select customers.customerid, customers.firstname, customers.lastname, items_ordered.order_date, items_ordered.item, items_ordered.price
+from customers inner join items_ordered
+where customers.customerid = items_ordered.customerid;
+
+select customers.customerid, customers.firstname, customers.lastname, items_ordered.order_date, items_ordered.item, items_ordered.price
+from customers inner join items_ordered
+where customers.customerid = items_ordered.customerid
+order by customers.state desc;
+
+SELECT title
+FROM Movie 
+WHERE director = 'Steven Spielberg'
+
+SELECT year from Movie
+WHERE mID IN ( SELECT mID from Rating where stars IN (4,5))
+ORDER BY year asc;
+
+select Reviewer.name, Movie.title, Rating.stars, Rating.RatingDate
+from Movie inner join Rating on Movie.mID=Rating.mID
+    join Reviewer on Rating.rID = Reviewer.rID
+    order by Reviewer.name, Movie.title, Rating.stars 
